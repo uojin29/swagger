@@ -2,6 +2,7 @@ package com.example.swagger.domain.dto;
 
 import com.example.swagger.domain.Member;
 import com.example.swagger.domain.controller.request.MemberCreateRequest;
+import com.example.swagger.domain.controller.request.MemberUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,6 +33,12 @@ public class MemberDto {
         return MemberDto.builder()
                 .name(memberCreateRequest.getName())
                 .email(memberCreateRequest.getEmail())
+                .build();
+    }
+    public static MemberDto from(MemberUpdateRequest memberUpdateRequest) {
+        return MemberDto.builder()
+                .name(memberUpdateRequest.getName())
+                .email(memberUpdateRequest.getEmail())
                 .build();
     }
 }
