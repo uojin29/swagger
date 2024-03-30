@@ -29,8 +29,8 @@ public class Member extends BaseEntity{
                 .build();
     }
 
-    public void update(String name, String email) {
-        this.name = name;
-        this.email = email;
+    public void update(MemberDto memberDto) {
+        this.name = memberDto.getName();
+        this.email = memberDto.getEmail();
     }
 }

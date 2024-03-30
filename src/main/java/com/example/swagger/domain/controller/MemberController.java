@@ -33,4 +33,16 @@ public class MemberController {
         memberService.createMember(MemberDto.from(request));
         return "redirect:/member/memberList";
     }
+
+    @GetMapping("/member/updateForm/{id}")
+    public String updateForm(@ModelAttribute("id") Long memberId, Model model){
+        MemberDto memberDto = memberService.findByMemberId(memberId);
+        model.addAttribute("member", memberDto);
+        return "memberUpdateForm";
+    }
+    @PostMapping("/member/updateForm/{id}")
+    public String update(@ModelAttribute("id") Long memberId, @ModelAttribute("member") MemberCreateRequest request){
+        memberService.update(memberId, MemberDto.from(request));
+        return "redirect:/member/memberList";
+    }
 }
