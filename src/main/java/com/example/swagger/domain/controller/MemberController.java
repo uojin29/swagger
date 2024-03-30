@@ -5,50 +5,38 @@ import com.example.swagger.domain.controller.response.MemberListResponse;
 import com.example.swagger.domain.dto.MemberDto;
 import com.example.swagger.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
+@RestController
+@RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    @GetMapping("/member/memberList")
-    public String findMemberList(Model model){
+    @GetMapping
+    public ResponseEntity<MemberListResponse> getAllMembers() {
         MemberListResponse memberListResponse = memberService.getMemberList();
-        model.addAttribute("members", memberListResponse.getMembers());
-        return "memberList";
+        return ResponseEntity.ok().body(memberListResponse);
     }
-
-    @GetMapping("/member/memberForm")
-    public String createMemberForm(Model model){
-        model.addAttribute("member", new MemberCreateRequest());
-        return "memberForm";
-    }
-
-    @PostMapping("/member/memberForm")
-    public String createMember(@ModelAttribute("memberForm") MemberCreateRequest request ){
+    @PostMapping("/create")
+    public ResponseEntity<Void> createMember(@RequestBody MemberCreateRequest request) {
         memberService.createMember(MemberDto.from(request));
-        return "redirect:/member/memberList";
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    @GetMapping("/member/updateForm/{id}")
-    public String updateForm(@ModelAttribute("id") Long memberId, Model model){
+    @GetMapping("/{id}")
+    public ResponseEntity<MemberDto> getMemberById(@PathVariable("id") Long memberId) {
         MemberDto memberDto = memberService.findByMemberId(memberId);
-        model.addAttribute("member", memberDto);
-        return "memberUpdateForm";
+        return ResponseEntity.ok().body(memberDto);
     }
-    @PostMapping("/member/updateForm/{id}")
-    public String update(@ModelAttribute("id") Long memberId, @ModelAttribute("member") MemberCreateRequest request){
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateMember(@PathVariable("id") Long memberId, @RequestBody MemberCreateRequest request) {
         memberService.update(memberId, MemberDto.from(request));
-        return "redirect:/member/memberList";
+        return ResponseEntity.ok().build();
     }
-
-    @GetMapping("/member/delete/{id}")
-    public String delete(@ModelAttribute("id") Long memberId){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMember(@PathVariable("id") Long memberId) {
         memberService.delete(memberId);
-        return "redirect:/member/memberList";
+        return ResponseEntity.ok().build();
     }
 }
