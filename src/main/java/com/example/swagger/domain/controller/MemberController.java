@@ -45,4 +45,10 @@ public class MemberController {
         memberService.update(memberId, MemberDto.from(request));
         return "redirect:/member/memberList";
     }
+
+    @GetMapping("/member/delete/{id}")
+    public String delete(@ModelAttribute("id") Long memberId){
+        memberService.delete(memberId);
+        return "redirect:/member/memberList";
+    }
 }
