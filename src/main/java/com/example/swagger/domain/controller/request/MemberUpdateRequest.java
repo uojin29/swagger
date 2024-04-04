@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class MemberCreateRequest {
-    @Schema(description = "이름", example = "장유진")
+public class MemberUpdateRequest {
+    @Schema(description = "이름", example = "이정명")
     private String name;
-    @Schema(description = "이메일", example = "22000631@handong.ac.kr")
+    @Schema(description = "이메일", example = "dlwjdaud@handong.ac.kr")
     private String email;
 }
